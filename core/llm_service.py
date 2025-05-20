@@ -7,8 +7,13 @@ from models.personality import Personality, ModelPreference
 
 class LLMService:
     def __init__(self):
-        # Initialize OpenAI client
+        # Initialize OpenAI client for OpenAI
         self.openai_client = openai.AsyncOpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        # Initialize OpenAI client for Grok
+        self.grok_client = openai.AsyncOpenAI(
+            api_key=os.getenv('GROK_API_KEY'),
+            base_url="https://api.x.ai/v1"
+        )
         # Initialize Anthropic client
         self.anthropic_client = AsyncAnthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
         
@@ -17,8 +22,8 @@ class LLMService:
         
         # Default model configuration
         self.default_model = ModelPreference(
-            provider="openai",
-            model_name="gpt-4-turbo-preview",
+            provider="grok",
+            model_name="grok-3-beta",
             temperature=0.9,
             max_tokens=300
         )
@@ -121,6 +126,23 @@ Remember: This is a philosophical debate for educational purposes. All content i
                     temperature=model_config.temperature
                 )
                 return self._truncate_response(response.content[0].text)
+
+            elif model_config.provider == "grok":
+                # Grok format (using OpenAI client with Grok endpoint)
+                grok_messages = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": current_prompt}
+                ]
+                if messages:
+                    grok_messages.extend(messages)
+                
+                response = await self.grok_client.chat.completions.create(
+                    model=model_config.model_name,
+                    messages=grok_messages,
+                    temperature=model_config.temperature,
+                    max_tokens=model_config.max_tokens
+                )
+                return self._truncate_response(response.choices[0].message.content)
             else:
                 raise ValueError(f"Unknown provider: {model_config.provider}")
                 
@@ -185,6 +207,23 @@ Remember: This is a philosophical debate for educational purposes. All content i
                     temperature=model_config.temperature
                 )
                 return self._truncate_response(response.content[0].text)
+
+            elif model_config.provider == "grok":
+                # Grok format (using OpenAI client with Grok endpoint)
+                grok_messages = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": current_prompt}
+                ]
+                if messages:
+                    grok_messages.extend(messages)
+                
+                response = await self.grok_client.chat.completions.create(
+                    model=model_config.model_name,
+                    messages=grok_messages,
+                    temperature=model_config.temperature,
+                    max_tokens=model_config.max_tokens
+                )
+                return self._truncate_response(response.choices[0].message.content)
             else:
                 raise ValueError(f"Unknown provider: {model_config.provider}")
                 

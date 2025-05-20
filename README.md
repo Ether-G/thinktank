@@ -6,7 +6,7 @@ A Discord bot that facilitates philosophical debates between AI personalities, e
 
 - Dynamic philosophical debates between AI personalities
 - Customizable personality traits and reasoning styles
-- Support for multiple LLM providers (OpenAI and Anthropic)
+- Support for multiple LLM providers (OpenAI, Anthropic, and Grok)
 - Round-robin debate format with random number of interactions
 - Automatic debate summarization
 - Easy addition of new philosophical personalities
@@ -17,6 +17,7 @@ A Discord bot that facilitates philosophical debates between AI personalities, e
 - Discord Bot Token
 - OpenAI API Key
 - Anthropic API Key
+- Grok API Key
 
 ## Installation
 
@@ -42,6 +43,7 @@ pip install -r requirements.txt
 DISCORD_TOKEN=your_discord_bot_token
 OPENAI_API_KEY=your_openai_api_key
 ANTHROPIC_API_KEY=your_anthropic_api_key
+GROK_API_KEY=your_grok_api_key
 ```
 
 ## Project Structure
@@ -93,6 +95,14 @@ The `config/models.json` file contains configurations for different LLM models:
             "max_tokens": 500,
             "temperature": 0.7,
             "cost_per_1k_tokens": 0.015
+        }
+    },
+    "grok": {
+        "grok-1": {
+            "provider": "grok",
+            "max_tokens": 500,
+            "temperature": 0.7,
+            "cost_per_1k_tokens": 0.01
         }
     }
 }
@@ -185,4 +195,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - OpenAI for GPT models
 - Anthropic for Claude models
+- Grok for Grok models
 - Discord.py for the Discord API wrapper 

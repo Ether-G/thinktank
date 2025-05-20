@@ -20,5 +20,19 @@
             "temperature": 0.7,
             "cost_per_1k_tokens": 0.008
         }
+    },
+    "grok": {
+        "grok-3-beta": {
+            "provider": "grok",
+            "max_tokens": 500,
+            "temperature": 0.7,
+            "cost_per_1k_tokens": 0.015
+        },
+        "grok-3-mini-beta": {
+            "provider": "grok",
+            "max_tokens": 500,
+            "temperature": 0.7,
+            "cost_per_1k_tokens": 0.005
+        }
     }
 } 
