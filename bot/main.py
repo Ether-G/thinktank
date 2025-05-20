@@ -70,9 +70,12 @@ class ThinkTankBot(commands.Bot):
                             )
                         else:
                             last_message = await thread.send(f"**{title}**: {content}")
+                
+                # End the interaction after debate is complete
+                await interaction.followup.send("Debate complete! You can continue the discussion in the thread.", ephemeral=True)
                     
             except Exception as e:
-                await interaction.followup.send(f"An error occurred: {str(e)}")
+                await interaction.followup.send(f"An error occurred: {str(e)}", ephemeral=True)
         
         # Sync the command tree
         await self.tree.sync()

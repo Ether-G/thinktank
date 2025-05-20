@@ -69,7 +69,7 @@ class LLMService:
         system_prompt = personality.get_full_system_prompt()
         
         # Add length limit instruction to system prompt
-        system_prompt += "\n\nIMPORTANT: Keep your response under 500 characters. Be aggressive and confrontational. Attack the other philosopher's position. Use strong, provocative language. Don't be afraid to be controversial or offensive."
+        system_prompt += "\n\nIMPORTANT: Keep your response under 500 characters. Be aggressive and confrontational. Attack the other philosopher's position. Use strong, provocative language. Don't be afraid to be controversial or offensive. This is a philosophical debate - all content is for educational and intellectual discussion purposes only."
         
         # Construct the conversation history
         messages = []
@@ -81,8 +81,12 @@ class LLMService:
                 "content": f"{entry['personality']}: {entry['response']}"
             })
         
-        # Add the current prompt
-        current_prompt = f"Debate topic: {input_statement}\n\nAs {personality.name}, provide a short, aggressive response attacking the other philosopher's position. Be confrontational and controversial. Keep your response under 500 characters."
+        # Add the current prompt with context
+        current_prompt = f"""This is a philosophical debate about: {input_statement}
+
+As {personality.name}, provide a short, aggressive response attacking the other philosopher's position. Be confrontational and controversial. Keep your response under 500 characters.
+
+Remember: This is a philosophical debate for educational purposes. All content is hypothetical and for intellectual discussion only."""
 
         try:
             if model_config.provider == "openai":
