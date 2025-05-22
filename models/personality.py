@@ -7,6 +7,11 @@ class ModelPreference(BaseModel):
     temperature: Optional[float] = 0.7
     max_tokens: Optional[int] = 500
 
+class DebateStyle(BaseModel):
+    tone: str
+    approach: str
+    strengths: List[str]
+
 class Personality(BaseModel):
     name: str
     description: str
@@ -14,7 +19,7 @@ class Personality(BaseModel):
     philosophical_school: Optional[str] = None
     key_philosophers: Optional[list[str]] = None
     core_beliefs: Optional[list[str]] = None
-    debate_style: Optional[str] = None
+    debate_style: Optional[DebateStyle] = None
     model_preferences: Optional[List[ModelPreference]] = None
     
     def get_full_system_prompt(self) -> str:
@@ -30,7 +35,7 @@ Key Influences: {', '.join(self.key_philosophers) if self.key_philosophers else 
 Core Beliefs:
 {chr(10).join(f'- {belief}' for belief in self.core_beliefs) if self.core_beliefs else 'Not specified'}
 
-Debate Style: {self.debate_style or 'Not specified'}
+Debate Style: {self.debate_style.tone if self.debate_style else 'Not specified'}
 
 Additional Instructions:
 1. Stay true to your philosophical perspective
